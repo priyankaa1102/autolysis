@@ -1,26 +1,3 @@
-import subprocess
-import sys
-
-# Function to install a package
-def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-# List of required packages
-required_packages = [
-    "seaborn",
-    "pandas",
-    "matplotlib",
-    "scikit-learn"
-]
-
-# Check if each package is installed, and install if missing
-for package in required_packages:
-    try:
-        __import__(package)  # Try importing the package
-    except ImportError:
-        print(f"Package '{package}' not found. Installing...")
-        install(package)
-
 
 import os
 import sys
