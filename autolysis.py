@@ -59,55 +59,63 @@ def perform_clustering(data):
     data["Cluster"] = clusters
     return clusters
 
-# Generate visualizations
 def generate_visualizations(data, output_dir):
     charts = []
     try:
+        # Select only numeric columns for correlation heatmap, scatter matrix, etc.
+        numeric_data = data.select_dtypes(include=["number"])
+
         # Correlation Heatmap
-        if data.select_dtypes(include=["number"]).shape[1] > 1:
+        if numeric_data.shape[1] > 1:
             plt.figure(figsize=(10, 8))
-            sns.heatmap(data.corr(), annot=True, cmap="coolwarm")
+            sns.heatmap(numeric_data.corr(), annot=True, cmap="coolwarm")
             heatmap_path = f"{output_dir}/correlation_heatmap.png"
             plt.savefig(heatmap_path)
             charts.append(heatmap_path)
             plt.close()
+            print(f"Saved heatmap at {heatmap_path}")  # Added logging
 
         # Correlation Matrix
         correlation_matrix_path = f"{output_dir}/correlation_matrix.png"
-        pd.plotting.scatter_matrix(data.select_dtypes(include=["number"]), figsize=(12, 12))
+        pd.plotting.scatter_matrix(numeric_data, figsize=(12, 12))
         plt.savefig(correlation_matrix_path)
         charts.append(correlation_matrix_path)
         plt.close()
+        print(f"Saved correlation matrix at {correlation_matrix_path}")  # Added logging
 
         # Overall Histogram
         overall_histogram_path = f"{output_dir}/overall_histogram.png"
-        data.hist(figsize=(12, 10), bins=30)
+        numeric_data.hist(figsize=(12, 10), bins=30)
         plt.tight_layout()
         plt.savefig(overall_histogram_path)
         charts.append(overall_histogram_path)
         plt.close()
+        print(f"Saved overall histogram at {overall_histogram_path}")  # Added logging
 
         # Quality Histogram (if applicable column exists)
-        if "quality" in data.columns:
+        if "quality" in numeric_data.columns:
             quality_histogram_path = f"{output_dir}/quality_histogram.png"
-            data["quality"].hist(figsize=(8, 6), bins=20, color="skyblue")
+            numeric_data["quality"].hist(figsize=(8, 6), bins=20, color="skyblue")
             plt.title("Quality Histogram")
             plt.xlabel("Quality")
             plt.ylabel("Frequency")
             plt.savefig(quality_histogram_path)
             charts.append(quality_histogram_path)
             plt.close()
+            print(f"Saved quality histogram at {quality_histogram_path}")  # Added logging
 
         # Clustering Scatter Plot
         if "Cluster" in data.columns:
             plt.figure(figsize=(8, 6))
-            sns.scatterplot(x=data.select_dtypes(include=["number"]).columns[0],
-                            y=data.select_dtypes(include=["number"]).columns[1],
+            sns.scatterplot(x=numeric_data.columns[0],
+                            y=numeric_data.columns[1],
                             hue="Cluster", data=data, palette="viridis")
             clustering_path = f"{output_dir}/clustering_plot.png"
             plt.savefig(clustering_path)
             charts.append(clustering_path)
             plt.close()
+            print(f"Saved clustering plot at {clustering_path}")  # Added logging
+
     except Exception as e:
         print(f"Visualization error: {e}")
     return charts
@@ -183,8 +191,9 @@ if __name__ == "__main__":
     file_path = sys.argv[1]
 
     # For testing with the uploaded file:
-    if file_path == "uploaded_file":
-        file_path = "/mnt/data/goodreads.csv"
+    if not os.path.exists(file_path):
+        print(f"Error: The file '{file_path}' does not exist.")
+        sys.exit(1)
 
     output_dir = "."
 
@@ -196,4 +205,3 @@ if __name__ == "__main__":
 
     charts = generate_visualizations(data, output_dir)
     write_readme(analysis_summary, charts, output_dir)
-
