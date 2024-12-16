@@ -1,3 +1,5 @@
+# uvicorn: python3
+# requirements: seaborn pandas matplotlib numpy
 
 import os
 import sys
