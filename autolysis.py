@@ -3,7 +3,8 @@
 # dependencies = [
 #   "seaborn",
 #   "pandas",
-#   "matplotlib"
+#   "matplotlib",
+#   "sklearn"
 # ]
 # ///
 
