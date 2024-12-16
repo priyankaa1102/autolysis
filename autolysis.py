@@ -1,5 +1,8 @@
-# uvicorn: python3
-# requirements: seaborn pandas matplotlib numpy
+# requires-python = ">=3.11"
+# dependencies = [
+#   "seaborn",
+#   "pandas",
+# ]
 
 import os
 import sys
