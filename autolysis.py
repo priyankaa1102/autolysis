@@ -4,7 +4,7 @@
 #   "seaborn",
 #   "pandas",
 #   "matplotlib",
-#   "sklearn"
+#   "scikit-learn"
 # ]
 # ///
 
