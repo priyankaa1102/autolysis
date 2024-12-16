@@ -1,9 +1,11 @@
-# inline_script_metadata
-# dependencies:
-#   - seaborn
-#   - pandas
-#   - matplotlib
-
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#   "seaborn",
+#   "pandas",
+#   "matplotlib"
+# ]
+# ///
 
 import os
 import sys
